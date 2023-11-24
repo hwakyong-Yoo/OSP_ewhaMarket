@@ -14,10 +14,10 @@
     <div class="four-container">
         <h1 class="four-sub_title">리뷰 작성</h1>
         
-        <form class="mb-3" method="post" action="/reg_review" enctype="multipart/form-data">
+        <form class="mb-3" name="myform" id="myform" method="post" action="/reg_review" enctype="multipart/form-data">
             <div class="four-input-group">
                 <label for="id" class="four-label">ID:</label>
-                <input type="text" class="four-text" name="id">
+                <input type="text" class="four-text" name="id" value="{{session['id']}}">
             </div>
 
             <div class="four-input-group">

@@ -9,7 +9,7 @@ DB = DBhandler()
 
 @application.route("/")
 def hello():
-    return render_template("index.html")
+    return render_template("two_item.html")
     #return redirect(url_for('view_list'))
 
 @application.route("/login")
@@ -83,13 +83,13 @@ def view_review_detail(name):
     print("###name:",name)
     data = DB.get_review_byname(name)
     print("####data:", data)
-    return render_template("review_detail.html", name=name, data=data)
+    return render_template("six_review_detail.html", name=name, data=data)
 
 @application.route("/review")
 def view_review():
     page = request.args.get("page", 0, type=int)
     per_page=6 # item count to display per page
-    per_row=3# item count to display per row
+    per_row=1# item count to display per row
     row_count=int(per_page/per_row)
     start_idx=per_page*page
     end_idx=per_page*(page+1)
@@ -103,10 +103,14 @@ def view_review():
         else:
             locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
     return render_template(
-     "review.html",
+     "five_review_1109.html",
      datas=data.items(),
      row1=locals()['data_0'].items(),
      row2=locals()['data_1'].items(),
+     row3=locals()['data_2'].items(),
+     row4=locals()['data_3'].items(),
+     row5=locals()['data_4'].items(),
+     row6=locals()['data_5'].items(),
      limit=per_page,
      page=page,
      page_count=int((item_counts/per_page)+1),
@@ -114,7 +118,7 @@ def view_review():
 
 @application.route("/reg_items")
 def reg_item():
-    return render_template("reg_items.html")
+    return render_template("one_item_regi.html")
 
 @application.route("/contact")
 def view_contact():
@@ -152,7 +156,7 @@ def register_user():
 
 @application.route("/reg_review_init/<name>/")
 def reg_review_init(name):
-    return render_template("reg_reviews.html", name=name)
+    return render_template("four_review.html", name=name)
 
 @application.route("/reg_review", methods=['POST'])
 def reg_review():

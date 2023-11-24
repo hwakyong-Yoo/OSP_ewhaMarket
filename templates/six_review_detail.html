@@ -4,39 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>리뷰 페이지</title>
-    <link rel="stylesheet" type="text/css" href="../static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/style.css" />
     <script src="{{url_for('static', filename='main.js')}}" defer></script>
 </head>
 <body>
-    <div class="four-container">
-        <h1 class="four-sub_title">리뷰 작성</h1>
+
+    <div class="sub_header">
         <h2 class="four-home"><a class="home-a" href="/">이화마켓</a></h2>
-        <br />
         <hr class="four-hr" />
+    </div>
+
+
+    <div class="six-container">
+        
         <div class="six-user-info">
-            <div class="six-avatar"></div>
+            <div class="six-avatar"><img class="six-user-image" src=""></div>
             <div class="six-user-details">
-                <p class="six-nickname">Nickname</p>
-                <p class="six-product-name">상품명</p>
-                <p class="six-date">2023.01.01</p>
+                <p class="six-nickname">{{data.ID}}</p>
+                <p class="six-product-name">{{name}}</p>
+                <p class="six-review-title">{{data.title}}</p>
+                <p class="six-date">2023-01-01</p>
             </div>
             <div class="six-unstar_rating">
-                <span class="six-unstar">&#9733;</span> 
-                <span class="six-unstar">&#9733;</span> 
-                <span class="six-unstar">&#9733;</span> 
-                <span class="six-unstar">&#9734;</span> 
-                <span class="six-unstar">&#9734;</span> 
+                {% for _ in range(data.rate|int) %}
+                    <span class="five_star">&#9733;</span>
+                {% endfor %}
+                {% for _ in range(5 - data.rate|int) %}
+                    <span class="five_unstar">&#9734;</span>
+                {% endfor %}
             </div>
         </div>
         <div id="six-wrap_image">
-            <article class="six-article"><img class="six-img" src="dessert1.jpg"></article>
-            <article class="six-article"><img class="six-img" src="dessert2.jpg"></article>
-            <article class="six-article"><img class="six-img" src="dessert3.jpg"></article>
-            <article class="six-article"><img class="six-img" src="dessert4.jpg"></article>
+            <article class="six-article"><img class="six-img" src="../../static/images/{{data.img_path}}"></article>
         </div>
-        <textarea class="four-review-content" id="six-readonly" readonly></textarea>
+        <textarea class="six-review-content" id="six-readonly" readonly>{{data.review}}</textarea>
         <div id="six-thumb">
-            도움이 되었어요 <img id="six-thumb-image" src="thumb-up.png" onclick="toggleImage()">
+            도움이 되었어요 <img id="six-thumb-image" src="../../static/images/thumb-up.png" onclick="toggleImage()">
         </div>
     </div>
 </body>

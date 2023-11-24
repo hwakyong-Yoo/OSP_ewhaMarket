@@ -26,7 +26,7 @@
         method="post"
         enctype="multipart/form-data"
       >
-        <div class="one_image_box">
+          <div class="one_image_box">
           <button type="button" id="one_add_images">+</button>
           <br />
         </div>
@@ -34,6 +34,11 @@
         <div class="one_input_form">
           <!--짧은 이미지 폼 넣는 곳: id, 상품명, 가격, 카테고리, 옵션, 기타 정보, 이벤트 글-->
           <div>
+            <label for="img">Represantation Images upload: </label>
+            <input type="file" name="file" />
+            <br<br>
+          </div>
+            <div>
             <label for="id_i">*ID: </label>
             <input
               type="text"
@@ -102,7 +107,7 @@
         </div>
         <div class="one_submit_btn">
           <!--제출 버튼: submit, 돌아가기 버튼: 클릭 시 팝업 <input type="submit" value="Submit!"><br><br>-->
-          <button type="button" id="one_back_i">돌아가기</button>
+          <button type="button" id="one_back_i" onclick="history.back()">돌아가기</button>
           <button type="submit" id="one_submit_i">완료</button>
         </div>
       </form>

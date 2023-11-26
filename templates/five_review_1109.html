@@ -4,26 +4,32 @@
     <meta charset="UTF-8">
     <title>EWHA MARKET</title>
     <link rel="stylesheet" type="text/css" href="../static/style.css" />
-    <script src = "main.js"></script>
+    <script src = "../static/main.js"></script>
 </head>
 <body>
     <!-- 공통 부분 -->
-    <div class="two_top_navbar">
+    <div class="top_navbar">
         <ul>
-            <li><a href="two_item.html">홈</a></li>
-            <li><a href="nine_mypage.html">마이페이지</a></li>
-            <li><a href="login.html">로그아웃</a></li>
+            <li><a href="/mypage">마이페이지</a></li>
+            {% if session['id'] %}
+        <li>
+          <a href="/logout">로그아웃</a>
+          <b>{{session['id']}}님</b>
+        </li>
+        {% else %}
+        <li><a href="/login">로그인</a></li>
+        {% endif %}
         </ul>
     </div>
     
-    <nav class="two_navbar">
-        <p>이화마켓</p>
-        <div class = "two_navbar_container">
+    <nav class="navbar">
+        <p><a href="/">이화마켓</a></p>
+        <div class = "navbar_container">
             <ul>
-                <li><a href="">전체 상품</a></li>
-                <li><a href="">상품 등록</a></li>
+                <li><a href="/list">전체 상품</a></li>
+                <li><a href="/reg_items">상품 등록</a></li>
                 <li><a href="">전체 리뷰</a></li>
-                <li><a href="">리뷰 등록</a></li>
+                <li><a href="/reg_review_init">리뷰 등록</a></li>
             </ul>
         </div>
     </nav>
@@ -33,12 +39,7 @@
 	<div class="five_container">
 		<div class="five_title_img">
             <div class="five_rate_avg">
-		        <span class="five_star">&#9733;</span>
-		        <span class="five_star">&#9733;</span>
-		        <span class="five_star">&#9733;</span>
-		        <span class="five_unstar">&#9734;</span>
-		        <span class="five_unstar">&#9734;</span>
-		        <span class="five_star_numbers">({{total}})</span>
+		        <span class="five_star_numbers">{{total}}개의 리뷰가 등록되었습니다.</span>
 	        </div>
             <div class = "five_img_box">
                 <button type="button" id="five_back"><</button>
@@ -64,7 +65,7 @@
 		<div class="five_review">
 			<div class="five_review_header">
 				<div class="five_satisfaction">
-					<p>60%가 만족한 상품입니다.</p>
+					<p></p>
 				</div>
 				<div class="five_order">
 					<a href="">▼ 최신순</a>
@@ -244,23 +245,24 @@
 				<hr>
 			</div>
             {% endfor %}
+            <div class="five_pagination">
+		        <ul>
+                    <li>
+                        {% for i in range(page_count)%}
+                        <a href="{{url_for('view_review', page=i)}}" color="black">{{i+1}}</a>
+                        {% endfor %}
+                    </li>
+		        </ul>
+	        </div>
+        {% else %}
+        <p>
+        등록된 리뷰가 없습니다.
+        </p>
             
 		</div>
 	</div>
-	<div class="five_pagination">
-		<ul>
-			<li>
-                {% for i in range(page_count)%}
-                <a href="{{url_for('view_review', page=i)}}" color="black">{{i+1}}</a>
-                {% endfor %}
-            </li>
-		</ul>
-	</div>
-    {% else %}
-    <p>
-    등록된 리뷰가 없습니다.
-    </p>
-    {% endif %}    
+    {% endif %}
+    </div>
 
 </body>
 </html>

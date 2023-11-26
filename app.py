@@ -9,12 +9,12 @@ DB = DBhandler()
 
 @application.route("/")
 def hello():
-    return render_template("two_item.html")
+    return render_template("top.html")
     #return redirect(url_for('view_list'))
 
 @application.route("/login")
 def login():
-    return render_template("login.html")
+    return render_template("seven_login.html")
 
 @application.route("/logout")
 def logout_user():
@@ -38,7 +38,7 @@ def login_user():
     if DB.find_user(id_, pw_hash):
         session['id'] = id_
         #return redirect(url_for('view_list'))
-        return render_template("index.html")
+        return render_template("two_item.html")
     else:
         flash("Wrong ID or PW!")
         return render_template("login.html")
@@ -76,7 +76,7 @@ def view_item_detail(name):
     print("###name:",name)
     data = DB.get_item_byname(name)
     print("####data:", data)
-    return render_template("detail.html", name=name, data=data)
+    return render_template("three_item_view.html", name=name, data=data)
 
 @application.route("/view_review_detail/<name>/")
 def view_review_detail(name):
@@ -102,6 +102,7 @@ def view_review():
             locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
         else:
             locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+    
     return render_template(
      "five_review_1109.html",
      datas=data.items(),
@@ -180,6 +181,21 @@ def like(name):
 def unlike(name):
     my_heart = DB.update_heart(session['id'],'N',name)
     return jsonify({'msg': '안좋아요 완료!'})
+
+@application.route('/show_thumb/<name>/', methods=['GET'])
+def show_thumb(name):
+    item_thumb = DB.get_thumb_byname(name)
+    return jsonify({'item_thumb': item_thumb})
+
+@application.route('/thumb/<name>/', methods=['POST'])
+def thumb(name):
+    item_thumb = DB.update_thumb('Y',name)
+    return jsonify({'msg': '도움이 됐어요!'})
+
+@application.route('/unthumb/<name>/', methods=['POST'])
+def unthumb(name):
+    item_thumb = DB.update_thumb('N',name)
+    return jsonify({'msg': '도움이 됐어요 취소!'})
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', debug=True)

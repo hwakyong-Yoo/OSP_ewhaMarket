@@ -122,3 +122,21 @@ class DBhandler:
         heart_info = {"interested": isHeart}
         self.db.child("heart").child(user_id).child(item).set(heart_info)
         return True
+    
+    def get_thumb_byname(self, name):
+        thumbs = self.db.child("thumb").child(name).get()
+        target_value=""
+        if thumbs.val() == None:
+            return target_value
+
+        for res in thumbs.each():
+            key_value = res.key()
+
+            if key_value == name:
+                target_value=res.val()
+        return target_value
+    
+    def update_thumb(self, isThumb, item):
+        thumb_info = {"thumbed": isThumb}
+        self.db.child("thumb").child(item).set(thumb_info)
+        return True

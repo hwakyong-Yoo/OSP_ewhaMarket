@@ -94,6 +94,9 @@ class DBhandler:
         reviews = self.db.child("review").get().val()
         return reviews
     
+    def get_thumbs(self):
+        thumbs = self.db.child("thumb").get().val()
+    
     def get_review_byname(self, name):
         reviews = self.db.child("review").get()
         target_value=""
@@ -136,7 +139,7 @@ class DBhandler:
                 target_value=res.val()
         return target_value
     
-    def get_thumb_count_by_item(self, item):
+    def get_thumb_count_byname(self, item):
         thumbs = self.db.child("thumb").child(item).get()
     
     # 존재하지 않는 경우 또는 빈 경우 0을 반환

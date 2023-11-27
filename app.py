@@ -82,6 +82,7 @@ def view_item_detail(name):
 def view_review_detail(name):
     print("###name:",name)
     data = DB.get_review_byname(name)
+    #thumb = DB.get_thumb_byname(name)
     print("####data:", data)
     return render_template("six_review_detail.html", name=name, data=data)
 

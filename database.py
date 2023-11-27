@@ -123,8 +123,8 @@ class DBhandler:
         self.db.child("heart").child(user_id).child(item).set(heart_info)
         return True
     
-    def get_thumb_byname(self, name):
-        thumbs = self.db.child("thumb").child(name).get()
+    def get_thumb_byname(self, item, name):
+        thumbs = self.db.child("thumb").child(item).get()
         target_value=""
         if thumbs.val() == None:
             return target_value
@@ -136,7 +136,23 @@ class DBhandler:
                 target_value=res.val()
         return target_value
     
-    def update_thumb(self, isThumb, item):
+    def get_thumb_count_by_item(self, item):
+        thumbs = self.db.child("thumb").child(item).get()
+    
+    # 존재하지 않는 경우 또는 빈 경우 0을 반환
+        if thumbs.val() is None:
+            return 0
+
+        count = 0
+        for res in thumbs.each():
+            thumb_status = res.val().get("thumbed", "")
+            if thumb_status == 'Y':
+                count += 1
+
+        return count
+
+    
+    def update_thumb(self, item_, isThumb, user_id):
         thumb_info = {"thumbed": isThumb}
-        self.db.child("thumb").child(item).set(thumb_info)
+        self.db.child("thumb").child(item_).child(user_id).set(thumb_info)
         return True

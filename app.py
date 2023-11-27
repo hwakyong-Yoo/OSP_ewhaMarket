@@ -76,7 +76,7 @@ def view_item_detail(name):
     print("###name:",name)
     data = DB.get_item_byname(name)
     print("####data:", data)
-    return render_template("three_item_view.html", name=name, data=data)
+    return render_template("detail.html", name=name, data=data)
 
 @application.route("/view_review_detail/<name>/")
 def view_review_detail(name):
@@ -184,17 +184,17 @@ def unlike(name):
 
 @application.route('/show_thumb/<name>/', methods=['GET'])
 def show_thumb(name):
-    item_thumb = DB.get_thumb_byname(name)
+    item_thumb = DB.get_thumb_byname(name, session['id'])
     return jsonify({'item_thumb': item_thumb})
 
 @application.route('/thumb/<name>/', methods=['POST'])
 def thumb(name):
-    item_thumb = DB.update_thumb('Y',name)
+    item_thumb = DB.update_thumb(name, 'Y', session['id'])
     return jsonify({'msg': '도움이 됐어요!'})
 
 @application.route('/unthumb/<name>/', methods=['POST'])
 def unthumb(name):
-    item_thumb = DB.update_thumb('N',name)
+    item_thumb = DB.update_thumb(name,'N', session['id'])
     return jsonify({'msg': '도움이 됐어요 취소!'})
 
 if __name__ == "__main__":

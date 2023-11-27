@@ -38,7 +38,7 @@
         <div id="six-wrap_image">
             <article class="six-article"><img class="six-img" src="../../static/images/{{data.img_path}}"></article>
         </div>
-        <textarea class="six-review-content" id="six-readonly" readonly>{{data.review}}</textarea>
+        <textarea class="detail-txt" id="readonly" readonly>{{data.review}}</textarea>
         <div id="six-thumb">
             도움이 되었어요 <img id="six-thumb-image" src="../../static/images/thumb-up.png">
         </div>
@@ -50,12 +50,15 @@
                 data: {},
                 success: function (response){
                     let item_thumb = response['item_thumb'];
+                    
                     if (item_thumb['thumbed'] == 'Y')
                     {
+                        $("#six-thumb-image").attr("src", "../../static/images/thumb-up-filled.png");
                         $("#six-thumb-image").attr("onclick","unthumb()");
                     }
                     else
                     {
+                        $("#six-thumb-image").attr("src", "../../static/images/thumb-up.png");
                         $("#six-thumb-image").attr("onclick","thumb()");
                     }
                 }

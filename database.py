@@ -174,6 +174,11 @@ class DBhandler:
     
         return True
     
+    def get_follow(self, name):
+        following = self.db.child("follow").child(name).get().val()
+        
+        return following
+    
     def get_follow_byname(self, uid, name):
         follow = self.db.child("follow").child(uid).get()
         target_value=""
@@ -201,32 +206,44 @@ class DBhandler:
         current_follow_data = self.db.child("follow").child(user_id).get().val()
         if current_follow_data is not None:
             current_follow_data["following_count"] = count
-            self.db.child("follow").child(user_id).update(current_follow_data)
-            self.db.child("mypage").child(user_id).set(current_follow_data)
+            self.db.child("following_count").child(user_id).set(count)
+        return True
+
     
+    def get_followingcount_byname(self, id):
+        data = self.db.child("following_count").child(id).get().val()
+        return data
+    
+    def insert_buy_item(self, data):
+        id=data['id']
+        buy_info={
+            "item_name" : data['item_name'],
+            "timestamp" : data['timestamp']
+        }
+        self.db.child("buy").child(data['id']).push(buy_info)
         return True
     
     def get_sellitems_by_id(self, id):
         items = self.db.child("item").get()
         matching_items = []
-        if items.val() is not None:
-            for res in items.each():
-                # 각 물건(케이크, 쿠키, 마들렌 등)의 데이터에 접근
-                item_data = res.val()
 
-                # 만약 해당 물건에 id 키가 있다면
-                if "seller" in item_data and item_data["seller"] == id:
-                    matching_items.append(item_data)
+        for res in items.each():
+            # 각 물건(케이크, 쿠키, 마들렌 등)의 데이터에 접근
+            item_data = res.val()
+
+            # 만약 해당 물건에 id 키가 있다면
+            if "seller" in item_data and item_data["seller"] == id:
+                matching_items.append(item_data)
         return matching_items
     
     def get_solditems_by_id(self, id):
         items = self.db.child("sold").child(id).get()
         matching_items = []
-        if items.val() is not None:
-            for res in items.each():
-                # 각 물건(케이크, 쿠키, 마들렌 등)의 데이터에 접근
-                item_data = res.val()
-                matching_items.append(item_data)
+
+        for res in items.each():
+            # 각 물건(케이크, 쿠키, 마들렌 등)의 데이터에 접근
+            item_data = res.val()
+            matching_items.append(item_data)
         return matching_items
         
     def move_sell_item_to_sold(self, id, item_title):
@@ -251,21 +268,19 @@ class DBhandler:
         self.db.child("buy").child(data['id']).push(buy_info)
         return True
     
-    def get_buyitems_by_id(self, id):
+    def get_buyitems_by_id(self, id):    
+        buy_items = self.db.child("buy").child(id).get()
         matching_items = []
-        buy_items_ref = self.db.child("buy").child(id).get()
 
-        if buy_items_ref.val() is not None:
-            for res in buy_items_ref.each():
+        if buy_items:
+            for res in buy_items.each(): #buy 리스트에서 이름 1개씩 가져옴
                 value = res.val()
                 item_ref = self.db.child("item").child(value['item_name']).get()
-
-                if item_ref.val() is not None:
-                    item_data = item_ref.val()
-                    matching_items.append({
-                        "item_title": item_data.get("item_title"),
-                        "img_path": item_data.get("img_path"),
-                        "price": item_data.get("price")
-                    })
-
+                if item_ref:
+                        item_data = item_ref.val()
+                        matching_items.append({
+                        "item_title": item_data["item_title"],
+                        "img_path": item_data["img_path"],
+                        "price": item_data["price"]
+                        })
         return matching_items

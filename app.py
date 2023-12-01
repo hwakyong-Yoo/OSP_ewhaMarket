@@ -254,7 +254,9 @@ def view_yourpage(name):
 
 @application.route("/mypage/<id>/")
 def my_page(id):
-    return render_template("nine_mypage.html")
+    data = DB.get_followingcount_byname(str(id))
+    print(data)
+    return render_template("nine_mypage.html", data=data)
 
 @application.route("/mysell/<id>/")
 def my_sell(id):
@@ -301,6 +303,12 @@ def buy_button(name):
     flash("상품이 구매되었습니다.")
     #return render_template("detail.html", data=data)
     return redirect(url_for('view_detail_by_name', name=item_name))
+
+@application.route("/view_following/<name>/")
+def view_following(name):
+    data = DB.get_follow(name)
+    print(data)
+    return render_template("nine_following.html", data=data)
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', debug=True)
